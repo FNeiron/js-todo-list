@@ -70,11 +70,13 @@ class PostService{
         const delContainer = document.createElement('div');
         delContainer.classList.add('delete-button')
         const delBtn = document.createElement('button');
+        delBtn.setAttribute("id", "db" + id);
         delBtn.append(document.createTextNode('✖'));
 
         const editContainer = document.createElement('div');
         editContainer.classList.add('edit-button')
         const editBtn = document.createElement('button');
+        editBtn.setAttribute("id", "b" + id);
         editBtn.append(document.createTextNode('Изменить'));
         
         titleEl.append(titleHead);
@@ -97,7 +99,7 @@ class PostService{
     }
 
     _handleRemove(event){
-        const post = event.target.parentElement.parentElement;
+        const post = document.getElementById(event.target.id.substr(2));
         this.api.remove(post.id).then((res) => {
             if(res.status >= 200 && res.status <= 300){
                 event.target.removeEventListener('click', this._handleRemove);
@@ -119,10 +121,10 @@ class PostService{
         return -1;
     }
     openEdit(e){
-        const id = e.target.parentElement.parentElement.id;
-        const elem = e.target.parentElement.parentElement;
+        const id = e.target.id.substr(1);
+        const elem = document.getElementById(id);
 
-        const form = document.forms[0];
+        const form = document.getElementById("UpdateForm");
         form["userid"].value = this.nameToID(elem.querySelector('.username h3').textContent);
         form["title"].value = elem.querySelector('.info .title h4').textContent;
         form["body"].value = elem.querySelector('.info .body p').textContent;
@@ -137,15 +139,13 @@ class PostService{
 
     closeEdit(){
         this.editModal.classList.toggle('hidden');
-        document.forms[0].reset();
-        this.modal.classList.remove('active');
-        this.overlay.classList.remove('active');
+        document.getElementById("UpdateForm").reset();
     }
 
     _onEdit(e, id,elem){
         e.preventDefault();
         const formData = {};
-        const form = document.forms[0];
+        const form = document.getElementById("UpdateForm");
         const userName = elem.querySelector('.username h3'),
                   title = elem.querySelector('.info .title h4'),
                   body = elem.querySelector('.info .body p');
@@ -176,7 +176,7 @@ class PostService{
         }
 
         if (errors.length) {
-            const errorEl = form.getElementsByClassName('form-errors')[0];
+            const errorEl = document.getElementById('update-errors');
             errorEl.innerHTML = errors.map((er) => `<div>${er}</div>`).join('');
 
             return false;
@@ -226,20 +226,22 @@ class ModalService{
         this.addModal.classList.toggle('hidden');
     }
     close(){
-        const form = document.forms[1];
+        const form = document.getElementById("CreateForm");
         form.reset();
+        document.getElementById("create-errors").innerHTML = "";
         this.addModal.classList.toggle('hidden');
     }
     closeEdit(){
-        const form = document.forms[0];
+        const form = document.getElementById("UpdateForm");
         form.reset();
+        document.getElementById("update-errors").innerHTML = "";
         this.editModal.classList.toggle('hidden');
     }
     _onCreate(e) {
         e.preventDefault();
 
         const formData = {};
-        const form = document.forms[1];
+        const form = document.getElementById("CreateForm");
         Array.from(form.elements)
             .filter((item) => !!item.name)
             .forEach((elem) => {
@@ -268,7 +270,7 @@ class ModalService{
         }
 
         if (errors.length) {
-            const errorEl = form.getElementsByClassName('form-errors')[0];
+            const errorEl = document.getElementById('create-errors');
             errorEl.innerHTML = errors.map((er) => `<div>${er}</div>`).join('');
 
             return false;

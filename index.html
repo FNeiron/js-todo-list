@@ -24,7 +24,7 @@
         <div class="posts__container">
         </div>
         <section class="edit-modal hidden">
-            <form class="modal-form">
+            <form class="modal-form" id="UpdateForm">
                 <h3>Редактирование</h3>
                 <label for="UserId">UserId:</label>
                 <input type="text" name="userid">
@@ -33,12 +33,12 @@
                 <label for="body">Текст:</label>
                 <input type="text" name="body">
                 <button type="button" class="on-edit-button">Изменить</button>
-                <div class="form-errors"></div>
+                <div class="form-errors" id="update-errors"></div>
                 <div class="close edit-close"></div>
             </form>
         </section>
         <section class="add-modal hidden">
-            <form class="modal-form">
+            <form class="modal-form" id="CreateForm">
                 <h3>Создать пост</h3>
                 <label for="Userid">UserId:</label>
                 <input type="text" name="userid">
@@ -47,7 +47,7 @@
                 <label for="body">Текст:</label>
                 <input type="text" name="body">
                 <button type="button" class="submit-btn">OK</button>
-                <div class="form-errors"></div>
+                <div class="form-errors" id="create-errors"></div>
                 <div class="close add-close"></div>
             </form>
         </section>
