@@ -185,7 +185,7 @@ class PostService{
         return true;
     }
 }
-
+let currid = -1;
 class MainService{
     constructor(postService, modalService, api){
         this.modalService = modalService;
@@ -196,9 +196,10 @@ class MainService{
     }
     fetchAllTodo() {
         this.api.fetchAllTodos().then((todos) => {
-            todos.forEach((todo) =>
-                this.postService.addPost(todo.userid, todo.title, todo.body, todo.id)
-            );
+            todos.forEach((todo) => {
+                this.postService.addPost(todo.userid, todo.title, todo.body, todo.id);
+                currid = todo.id;
+        });
         });
     }
     _onOpenModal(){
@@ -254,7 +255,7 @@ class ModalService{
             formData['userid'] = res;
             return formData;
         }).then((formData) => this.api.create(formData).then((data) => {
-            this.postService.addPost(data.userid, data.title, data.body, data.id);
+            this.postService.addPost(data.userid, data.title, data.body, ++currid);
         }));
         form.reset();
         this.close(form);
